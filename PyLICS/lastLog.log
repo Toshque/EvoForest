@@ -1,0 +1,331 @@
+
+
+
+
+round # 0 
+New loop 
+0.72302358042 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  257 / 300 , trees count =  90 
+0.0296722369582 seconds spent for filterNegFitness 
+15  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+3.95565699715 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 54 
+2.36352481543 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 9 
+0  trees removed in pruning phase 
+0.0145977826788 seconds spent for pruning 
+End of pruning phase 
+6.36749270738 seconds spent for manageTrees 
+OnAfterStep nodes count =  300 , trees count =  90 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  900 / 1000000 
+
+
+Managing samples. Initial samples count =  7533 / 6000 
+Deletion sequence length =  1533 
+2  trees removed due to zero samples 
+0.504128112905 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 3.01174994801 
+avg fitness: 1.0 
+min fitness: 0.141892301104 
+7.94561895465 seconds spent for loop 
+loop end 
+efficiency(>0) =  21.4 % 
+efficiency(>1) =  45.4 % 
+End of round 0 
+
+
+
+
+round # 1 
+New loop 
+0.609786136383 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  296 / 300 , trees count =  88 
+0.00572519083969 seconds spent for filterNegFitness 
+7  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+3.95122839868 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 28 
+0.797776634881 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 50 
+3  trees removed in pruning phase 
+0.0398893163982 seconds spent for pruning 
+End of pruning phase 
+4.79502893100 seconds spent for manageTrees 
+OnAfterStep nodes count =  306 , trees count =  93 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  930 / 1000000 
+
+
+Managing samples. Initial samples count =  8936 / 6000 
+Deletion sequence length =  2936 
+8  trees removed due to zero samples 
+0.563547280577 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 8.50400767428 
+avg fitness: 1.0 
+min fitness: 0.168909058807 
+6.11079820826 seconds spent for loop 
+loop end 
+efficiency(>0) =  58.2 % 
+efficiency(>1) =  58.2 % 
+End of round 1 
+
+
+
+
+round # 2 
+New loop 
+0.460109543239 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  286 / 300 , trees count =  85 
+0.00890053072479 seconds spent for filterNegFitness 
+14  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+4.43146420288 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 21 
+0.811946781554 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 19 
+0  trees removed in pruning phase 
+0.0168197793626 seconds spent for pruning 
+End of pruning phase 
+5.26939357793 seconds spent for manageTrees 
+OnAfterStep nodes count =  300 , trees count =  86 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  860 / 1000000 
+
+
+Managing samples. Initial samples count =  9537 / 6000 
+Deletion sequence length =  3537 
+15  trees removed due to zero samples 
+0.504545485646 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 7.09463360223 
+avg fitness: 1.0 
+min fitness: 0.113932282294 
+6.35789142379 seconds spent for loop 
+loop end 
+efficiency(>0) =  62.0 % 
+efficiency(>1) =  70.4 % 
+End of round 2 
+
+
+
+
+round # 3 
+New loop 
+0.372226923051 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  268 / 300 , trees count =  71 
+0.0203993778181 seconds spent for filterNegFitness 
+18  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+3.89271467898 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 35 
+1.07289312293 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 12 
+1  trees removed in pruning phase 
+0.006867834246 seconds spent for pruning 
+End of pruning phase 
+4.99310023560 seconds spent for manageTrees 
+OnAfterStep nodes count =  300 , trees count =  67 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  670 / 1000000 
+
+
+Managing samples. Initial samples count =  8157 / 6000 
+Deletion sequence length =  2157 
+6  trees removed due to zero samples 
+0.442458439482 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 6.17446901645 
+avg fitness: 1.0 
+min fitness: 0.0964872142136 
+5.92476001067 seconds spent for loop 
+loop end 
+efficiency(>0) =  60.2 % 
+efficiency(>1) =  61.4 % 
+End of round 3 
+
+
+
+
+round # 4 
+New loop 
+0.351002492833 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  280 / 300 , trees count =  61 
+0.0276144525005 seconds spent for filterNegFitness 
+17  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+4.42083887360 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 28 
+0.82057134451 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 13 
+0  trees removed in pruning phase 
+0.0168060950105 seconds spent for pruning 
+End of pruning phase 
+5.28607594359 seconds spent for manageTrees 
+OnAfterStep nodes count =  300 , trees count =  59 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  590 / 1000000 
+
+
+Managing samples. Initial samples count =  8129 / 6000 
+Deletion sequence length =  2129 
+4  trees removed due to zero samples 
+0.368510481073 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 6.43690731061 
+avg fitness: 1.0 
+min fitness: 0.0423036879321 
+6.12398878339 seconds spent for loop 
+loop end 
+efficiency(>0) =  78.2 % 
+efficiency(>1) =  74.8 % 
+End of round 4 
+
+
+
+
+round # 5 
+New loop 
+0.407720141314 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  285 / 300 , trees count =  55 
+0.0449844568567 seconds spent for filterNegFitness 
+26  trees removed due to negative fitness 
+
+Recombination phase 
+Recombination phase: sequence len = 30 
+5.46252426122 seconds spent for recombination 
+End of recombination phase 
+
+Expansion phase 
+Expansion phase: sequence len = 29 
+0.694224861275 seconds spent for expansion 
+End of expansion phase 
+
+Pruning phase 
+Pruning phase: sequence len = 0 
+0  trees removed in pruning phase 
+0.00013513297769 seconds spent for pruning 
+End of pruning phase 
+6.20208937250 seconds spent for manageTrees 
+OnAfterStep nodes count =  281 , trees count =  44 
+End of tree management.
+ 
+
+
+Managing attrs. Initial attrs count =  440 / 1000000 
+
+
+Managing samples. Initial samples count =  6703 / 6000 
+Deletion sequence length =  703 
+0  trees removed due to zero samples 
+0.232247974146 seconds spent for manageSamples 
+End of samples management.
+ 
+assertions passed 
+max fitness: 8.26706888077 
+avg fitness: 1.0 
+min fitness: 0.0378687717661 
+6.9500971589 seconds spent for loop 
+loop end 
+efficiency(>0) =  86.0 % 
+efficiency(>1) =  84.0 % 
+End of round 5 
+
+
+
+
+round # 6 
+New loop 
+0.326496669001 seconds spent for ProcessSamples 
+Samples processed 
+
+
+Managing trees pool. Initial nodes count =  281 / 300 , trees count =  44 
+0.0291168803326 seconds spent for filterNegFitness 
+16  trees removed due t
