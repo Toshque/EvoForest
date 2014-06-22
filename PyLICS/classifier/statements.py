@@ -21,7 +21,11 @@ class statement:
 import helpers
 
 
-
+def get_takeValue(valueStr):
+    '''takes a value with a specified name'''
+    return get_statement(op_takeValue,valueStr)
+def get_takeConstant(constant):
+    return get_statement(op_takeConstant,constant)
 def get_statement(operation,args):
     '''get statement with this operation and args'''
     assert operation not in {op_sum,op_mul}
@@ -99,7 +103,7 @@ def op_sum(args,sample):
 
 def op_mul(args,sample):
     '''args[0]*args[1]'''
-    return helpers.mul([args[i].extractValue(sample) for i in args])
+    return helpers.mul([i.extractValue(sample) for i in args])
 def op_minus(args,sample):
     '''-1*args'''
     return -1*args[0].extractValue(sample)

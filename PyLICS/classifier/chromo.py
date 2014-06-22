@@ -69,8 +69,8 @@ class chromo:
         self.boolStatements = set(boolParams) #available boolean statements
         self.numStatements = set(numParams) #available numeric statements
         
-        self.stateUseDict = {i:set() for i in set(list(self.boolStatements)+list(self.numStatements))}#<bool/num>statement:nodes of application
-        self.originDict = {i:set() for i in self.numStatements}
+        self.stateUseDict = {i:set() for     i in set(list(self.boolStatements)+list(self.numStatements))}#<bool/num>statement:nodes of application
+        self.originDict = {}#dict X>C statement -> num statement X
 
     def classify(self,sample):
         return self.tree.classify(sample)
@@ -102,15 +102,11 @@ class chromo:
         else:
             return s
 
-    def getLocalAttrFitnessDict(self,node):
+    def getLocalAttrFitnessDict(self):
         '''calculates how important attributes are as a sum of (tree.numSamples) in all nodes divided by this attr'''
-        d = {i:0. for i in set(list(self.numStatements)+list(self.boolStatements))}
+        d = {i:0. for i in list(self.numStatements)+list(self.boolStatements)}
 
-        #enumerate all nodes
-        allNodes = [self.tree]
-        for i in allNodes:
-            if not  i.isTerminal:
-                allNodes+=[i.childPositive, i.childNegative]
+        allNodes = helpers.getNodes(self.tree,False)
         n = {node: self.getDichotomyImportance(node) for node in allNodes}
         for state in d:
             for node in self.stateUseDict[state]:
@@ -129,36 +125,55 @@ class chromo:
         return max(self.getReplacementPotential(node) for node in self.fringe)
     def getResourceWeight(self):
         '''heuristic estimate of CP time taken per loop in purple parrots'''
-        return self.fitness*len(self.samples)*(len(self.boolStatements)+len(self.numStatements))
-
+        return self.fitness*len(self.samples)*self.countStatements()
+    def lenStatements(self):
+        return len(self.boolStatements)+len(self.numStatements)
     def expandBestStates(self,count):
+        '''does not necessarily increase by count,returns true count'''
         fdict = self.getLocalAttrFitnessDict()
         c=0
-        while c < count:
-            opID = random.randint(0,1)
+        for i in range(count):
+            opID = random.randint(0,2)
             if opID == 0:
-                state1,state2= helpers.proportionalrandom(self.numStatements,lambda x:fdict[x],2)
+                if len(self.numStatements)<2:continue
+                state1,state2= helpers.proportionalrandomNoRep(self.numStatements,lambda x:fdict[x],2)
+                
                 newS = statements.get_sum([state1,state2])
                 if self.addState(newS,numeric = True):
                     fdict[newS] = 0
                     c+=1
-
             elif opID ==1:
-                state1,state2= helpers.proportionalrandom(self.numStatements,lambda x:fdict[x],2)
-                newS = statements.get_mul(state1,state2)
+                if len(self.numStatements)<2:continue
+                state1,state2= helpers.proportionalrandomNoRep(self.numStatements,lambda x:fdict[x],2)
+                newS = statements.get_sum([state1,statements.get_minus(state2)])
                 if self.addState(newS,numeric = True):
                     fdict[newS] = 0
                     c+=1
-        #potential freezer
-        return True
+            elif opID ==2:
+                if len(self.numStatements)<2:continue
+                state1,state2= helpers.proportionalrandomNoRep(self.numStatements,lambda x:fdict[x],2)#cannot be used as power
+                newS = statements.get_mul([state1,state2])
+                if self.addState(newS,numeric = True):
+                    fdict[newS] = 0
+                    c+=1
+        return c
     def removeWorstStates(self,count):
         '''removes <count> least usefull attrs and returns true and removed attrs list. If this isn't possible, signals False and []'''    
         fdict = self.getLocalAttrFitnessDict()
         if count>= len(fdict):
             return False,[]
         else:
-            deletionSequence = set(helpers.proportionalrandomNoRep(set(list(self.numStatements + self.boolStatements)),
-                                                                  lambda x: fdict[x],count))
+            zeroes = filter(lambda x:fdict[x]==0,fdict.keys())
+            
+            deletionSequence = []
+            if len(zeroes) >=count:
+                deletionSequence+= random.sample(zeroes,count)
+            else:
+                deletionSequence += zeroes
+                nonzeroes = filter(lambda x:fdict[x]!=0,fdict.keys())
+            
+                deletionSequence += list(helpers.proportionalrandomNoRep(nonzeroes,
+                                                                  lambda x: fdict[x],count-len(zeroes)))
             
             for attr in deletionSequence:
                 self.removeState(attr)
@@ -172,16 +187,19 @@ class chromo:
             self.numStatements.add(state)
         else:
             self.boolStatements.add(state)
-        self.stateUseDict[state] = set()
+        if state not in self.stateUseDict:#could have been left there since the previous equal statement, that is now removed.
+            self.stateUseDict[state] = set()
+        
         return True
-    def removeState(self,state,numeric=False):
+    def removeState(self,state):
         if not (state in self.numStatements or state in self.boolStatements):
             return False
+        numeric = state in self.numStatements
         if numeric:
             self.numStatements.remove(state)
         else:
             self.boolStatements.remove(state)
-        del self.stateUseDict[state]
+        
         return True
         
     def expandBestNode(self):
@@ -197,11 +215,10 @@ class chromo:
         divisor,origin = factor_connection.getBestLink(node.keyStatements,node.samples,self.boolStatements,self.numStatements,True)
         if divisor == False:
             return False;
-        if origin != divisor: #not boolean statements
-            self.stateUseDict[origin].add(node)
+
+        self.stateUseDict[origin].add(node)
+        if origin != divisor: #not boolean statements    
             self.originDict[divisor] = origin
-        else:
-            self.stateUseDict[divisor].add(node)
         
         node.expand(divisor)
         self.fringe.add(node.childPositive)
@@ -227,6 +244,21 @@ class chromo:
         self.prune(minIGNode)
         return True
     def prune(self,node):
+        if node.childPositive not in self.fringe or node.childNegative not in self.fringe:
+            return False
+
+        state = node.dichotomy
+        if node.dichotomy in self.originDict:
+            state = self.originDict[node.dichotomy]
+            del self.originDict[node.dichotomy]
+
+        
+        self.stateUseDict[state].remove(node)
+        
+        if len(self.stateUseDict[state]) == 0:
+            if state not in self.numStatements and state not in self.boolStatements:
+                 del self.stateUseDict[state]
+        
         self.fringe.remove(node.childPositive)
         self.fringe.remove(node.childNegative)
         self.fringe.add(node)

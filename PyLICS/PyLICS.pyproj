@@ -29,7 +29,7 @@
     <OutputPath>bin\pyC\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="classifier\agent.py" />
+    <Compile Include="classifier\system.py" />
     <Compile Include="classifier\attr.py" />
     <Compile Include="classifier\chromo.py" />
     <Compile Include="classifier\treeNode.py" />

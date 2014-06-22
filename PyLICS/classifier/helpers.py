@@ -101,6 +101,16 @@ def mul(sequence):
     for elem in sequence:
         m*=elem
     return m
+def getNodes(tree,includeLeafs = True):
+    '''all the nodes in the tree as list'''
+    allNodes = [tree]
+    for node in allNodes:
+        if not node.isTerminal:
+            if includeLeafs or (not node.childPositive.isTerminal):
+                allNodes.append(node.childPositive)
+            if includeLeafs or (not node.childNegative.isTerminal):
+                allNodes.append(node.childNegative)
+    return allNodes
 def getSize(classification,includeLeafs = True):
     '''returns the amount of nodes in the current the tree classification'''
     olist = [classification]

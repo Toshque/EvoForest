@@ -17,12 +17,14 @@ slist = []
 def createSample():
     A = math.cos(random.random()*math.pi - math.pi/2) #cos a
     B = random.random()*2 -1
-    O = random.choice([False,False,False,False,True])
+    O = random.choice([False,False,False,False,False,True])
     C1 = random.choice([False,True])
     C2 = random.choice([False,True])
     G = random.choice([False,False,True])
     Li =  ((random.random()*2-1)**1)/2 +0.5
-    L = [None]+ [Li -0.15 + random.random()*0.3 for i in range(4)]
+    L = [Li -0.15 + random.random()*0.3 for i in range(4)]
+    L.sort()
+    L = [None]+ L
     for i in range(1,5):
         if L[i] <0: L[i] = 0.
         elif L[i] >1: L[i] =1. 
@@ -32,13 +34,13 @@ def createSample():
     if O: 
         R=False
         C = True
-    elif A<0.25:
+    elif A<0.15:
         R = False
         if A<0.15:
             C =True
-    elif max(L[1:5]) - min(L[1:5]) > 0.3:
+    elif max(L[1:5]) - min(L[1:5]) > 0.20:
         R = False
-    elif Lm < 0.25:
+    elif Lm < 0.19:
         R = False
     elif C1:
         if Lm < 0.35:
@@ -46,23 +48,28 @@ def createSample():
         elif C2 and (Lm <0.4):
             R = False
     elif G == True:
+        C = True
         if Lm > 0.65:
             R = False
         elif (not C1) and (not C2) and Lm >0.6:
             R = False
-        elif max(L[1:5]) - min(L[1:5]) > 0.2:
+        elif max(L[1:5]) - min(L[1:5]) > 0.15:
             R = False
 
     elif  random.random() < 0.03:
         R = False
+
+
     if Lm<0.15:
-        C = True
+        C = False
+    elif max(L[1:5]) - min(L[1:5]) < 0.1:
+        C = False
     
     
     return samples.sample(['A','B','O','C1','C2','G',
                            'L1','L2','L3','L4','R','C'],
-                           [A,B,O,C1,C2,G,
-                            L[1],L[2],L[3],L[4],R,C])
+                           [A,B,O,C1,C2,G, L[1],L[2],L[3],L[4],R,C])
+
 def createSample_prejudiced():
 
     A = 1
@@ -72,7 +79,9 @@ def createSample_prejudiced():
     C2 = random.choice([False,True])
     G = False
     Li =  ((random.random()*2-1)**3)/2 +0.5
-    L = [None]+ [Li -0.1 + random.random()*0.2 for i in range(4)]
+    L = [Li -0.1 + random.random()*0.2 for i in range(4)]
+    L.sort()
+    L = [None]+ L
     for i in range(1,5):
         if L[i] <0: L[i] = 0.
         elif L[i] >1: L[i] =1. 
@@ -107,30 +116,29 @@ def createSample_prejudiced():
 
 
 outer=[]
-def check(classifier,keyStates,num,thr = 0):
+def check(classifier,keyStates,num,thr = 0,cnt = -1):
     successes = 0
     for i in range(num):
         smpl = createSample()
         for i in range(len(keyStates)):
-            if round(classifier.classify(smpl,thr)[keyStates[i]]) != keyStates[i].extractValue(smpl):
+            if round(classifier.classify(smpl,thr,cnt)[keyStates[i]]) != keyStates[i].extractValue(smpl):
                     break
 
         else:successes +=1
     return successes
 
-state0 = statements.get_statement(statements.op_takeValue,'A')
-state1 = statements.get_statement(statements.op_takeValue,'B')
-state2 = statements.get_statement(statements.op_takeValue,'O')
-state3 = statements.get_statement(statements.op_takeValue,'C1')
-state4 = statements.get_statement(statements.op_takeValue,'C2')
-state5 = statements.get_statement(statements.op_takeValue,'G')
-state6 = statements.get_statement(statements.op_takeValue,'L1')
-state7 = statements.get_statement(statements.op_takeValue,'L2')
-state8 = statements.get_statement(statements.op_takeValue,'L3')
-state9 = statements.get_statement(statements.op_takeValue,'L4')
+state0 = statements.get_takeValue('A')
+state1 = statements.get_takeValue('B')
+state2 = statements.get_takeValue('O')
+state3 = statements.get_takeValue('C1')
+state4 = statements.get_takeValue('C2')
+state5 = statements.get_takeValue('G')
+state6 = statements.get_takeValue('L1')
+state7 = statements.get_takeValue('L2')
+state8 = statements.get_takeValue('L3')
+state9 = statements.get_takeValue('L4')
 boolStatements = [state2,state3,state4,state5]
 numStatements = [state0,state1,state6,state7,state8,state9]
-
 
 slist = [createSample_prejudiced() for i in range(1000)]
 numparams= ['A','B','L1','L2','L3','L4']
@@ -138,9 +146,9 @@ boolparams = ['O','C1','C2','G']
 keyparams = ['R','C']
                                   
 import time
-import agent
+import system
 t = time.time()
-sys = agent.system(keyparams,boolparams,numparams,slist,6000,300,1000000)
+sys = system.system(keyparams,boolparams,numparams,slist,6000,300,15)
 keyStates =sys.keyStatements
 
 
@@ -165,13 +173,16 @@ def runSimulation(rounds = 100,tests = 500):
         sys.fullLoop([createSample() for i in range(50)])
         effi1 = check(sys,keyStates,num)
         effi2 = check(sys,keyStates,num,1)
+        effi3 = check(sys,keyStates,num, cnt = 10)
+
         sysLog.writeLine( 'efficiency(>0) = ',effi1*100. /num,'%')
         sysLog.writeLine( 'efficiency(>1) = ',effi2*100. /num,'%')
+        sysLog.writeLine( 'efficiency(10) = ',effi3*100. /num,'%')
 
         sysLog.writeLine( 'End of round',ri)
     
         s = sysLog.readString()
-        print s
+        print s[:-1]#all but for last /n to fit the screen
         flog.write(s);  
         fdump.write(sysDump.readString())
 
