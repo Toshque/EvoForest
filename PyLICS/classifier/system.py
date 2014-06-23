@@ -234,6 +234,9 @@ class system:
         for tree in self.treesPool:
             assert tree.numNodes != 0
             assert len(tree.samples)!=0
+            for state in tree.stateUseDict:
+                if state not in tree.boolStatements and state not in tree.numStatements:
+                   assert len(tree.stateUseDict[state])!=0
         for sample in self.samplesPool:
             assert len(self.samplesPool[sample])!=0
         assert sum(len(self.samplesPool[i]) for i in self.samplesPool) == self.currentSamplesCount

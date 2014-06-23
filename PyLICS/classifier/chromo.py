@@ -104,7 +104,7 @@ class chromo:
 
     def getLocalAttrFitnessDict(self):
         '''calculates how important attributes are as a sum of (tree.numSamples) in all nodes divided by this attr'''
-        d = {i:0. for i in list(self.numStatements)+list(self.boolStatements)}
+        d = {i:0. for i in self.activeStatements()}
 
         allNodes = helpers.getNodes(self.tree,False)
         n = {node: self.getDichotomyImportance(node) for node in allNodes}
@@ -125,9 +125,11 @@ class chromo:
         return max(self.getReplacementPotential(node) for node in self.fringe)
     def getResourceWeight(self):
         '''heuristic estimate of CP time taken per loop in purple parrots'''
-        return self.fitness*len(self.samples)*self.countStatements()
+        return self.fitness*len(self.samples)*self.lenStatements()
     def lenStatements(self):
         return len(self.boolStatements)+len(self.numStatements)
+    def activeStatements(self):
+        return set(list(self.boolStatements)+list(self.numStatements))
     def expandBestStates(self,count):
         '''does not necessarily increase by count,returns true count'''
         fdict = self.getLocalAttrFitnessDict()
@@ -181,7 +183,7 @@ class chromo:
 
 
     def addState(self,state,numeric=False):
-        if state in self.numStatements or state in self.boolStatements:
+        if state in self.activeStatements():
             return False
         if numeric:
             self.numStatements.add(state)
@@ -192,13 +194,15 @@ class chromo:
         
         return True
     def removeState(self,state):
-        if not (state in self.numStatements or state in self.boolStatements):
+        if not state in self.activeStatements():
             return False
         numeric = state in self.numStatements
         if numeric:
             self.numStatements.remove(state)
         else:
             self.boolStatements.remove(state)
+        if len(self.stateUseDict[state])==0:
+            del self.stateUseDict[state]
         
         return True
         
@@ -254,9 +258,9 @@ class chromo:
 
         
         self.stateUseDict[state].remove(node)
-        
-        if len(self.stateUseDict[state]) == 0:
-            if state not in self.numStatements and state not in self.boolStatements:
+
+        if state not in self.activeStatements():
+            if len(self.stateUseDict[state]) == 0:
                  del self.stateUseDict[state]
         
         self.fringe.remove(node.childPositive)
