@@ -253,8 +253,7 @@ class system:
         if self.writeDump:
             self.dumpWriter.writeLine('\nNew round')
             for tree in self.treesPool:
-                self.dumpWriter.writeLine('f:',tree.fitness,',n:',tree.numNodes,',s:',len(tree.samples))
-                self.dumpWriter.writeLine(tree.tree.visualise())
+                tree.logState(self.dumpWriter)
 
 
 
@@ -411,7 +410,7 @@ class system:
             self.logWriter.writeLine( _s,' trees removed due to zero samples')
             self.logWriter.timeMarker('manageSamples')
             self.logWriter.writeLine( 'OnAfterStep samples count = ',self.currentSamplesCount,'/',self.maxSamplesCount)
-            self.logWriter.writeLine( 'End of samples management./n')
+            self.logWriter.writeLine( 'End of samples management.\n')
                 
                                 
     def recombine(self,mother,father):

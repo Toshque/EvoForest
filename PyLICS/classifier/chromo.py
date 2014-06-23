@@ -271,4 +271,13 @@ class chromo:
 
 
 
-
+    def logState(self,writer):
+        writer.writeLine('f:',self.fitness,',n:',self.numNodes,',sm:',len(self.samples),',st:',self.lenStatements() )
+        writer.writeLine('tree repr:')
+        writer.writeLine(self.tree.visualise())
+        writer.writeLine('states:')
+        for state in self.stateUseDict:
+            writer.writeLine(len(self.stateUseDict[state]),':',state.toString(), (state in self.boolStatements or state in self.numStatements))
+        writer.writeLine('descr end\n\n')
+        
+        
